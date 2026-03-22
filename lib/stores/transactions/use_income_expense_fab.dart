@@ -6,6 +6,8 @@ import "package:walletplan_flutter/router/root_delegate.dart";
 
 enum AddType { income, expense }
 
+typedef NavigateToAddFlow = void Function(String path);
+
 typedef FabLogic = ({
   Ref<double> progress,
   VoidCallback onTap,
@@ -14,6 +16,18 @@ typedef FabLogic = ({
   GestureDragEndCallback onDragEnd,
   VoidCallback onDragCancel,
 });
+
+String addTypePath({required String route, required AddType type}) {
+  return "$route?type=${type.name}";
+}
+
+double addTypeProgress({required double dragAccum, required double liftPx}) {
+  return (-dragAccum / liftPx).clamp(0.0, 1.0).toDouble();
+}
+
+bool shouldOpenIncome({required double progress, required double threshold}) {
+  return progress >= threshold;
+}
 
 ({
   void Function() onDragCancel,
@@ -28,7 +42,11 @@ useAddIncomeOrExpenseFab({
   double liftPx = 18,
   double threshold = 0.6,
   bool haptics = true,
+  NavigateToAddFlow? navigateTo,
 }) {
+  assert(liftPx > 0, "liftPx must be greater than zero");
+  assert(threshold >= 0 && threshold <= 1, "threshold must be between 0 and 1");
+
   final (controller, t) = useAnimationController(
     duration: const Duration(milliseconds: 170),
     reverseDuration: const Duration(milliseconds: 190),
@@ -37,8 +55,7 @@ useAddIncomeOrExpenseFab({
   final isDragging = ref(false);
   final isLocked = ref(false);
   final dragAccum = ref(0.0);
-
-  String path(AddType type) => "$route?type=${type.name}";
+  final navigate = navigateTo ?? rootDelegate.beamToNamed;
 
   void reset() {
     dragAccum.value = 0.0;
@@ -50,12 +67,18 @@ useAddIncomeOrExpenseFab({
   }
 
   void onTap() {
-    if (isLocked.value || isDragging.value) return;
-    rootDelegate.beamToNamed(path(AddType.expense));
+    if (isLocked.value || isDragging.value) {
+      return;
+    }
+
+    navigate(addTypePath(route: route, type: AddType.expense));
   }
 
   void onDragStart(DragStartDetails _) {
-    if (isLocked.value) return;
+    if (isLocked.value) {
+      return;
+    }
+
     isDragging.value = true;
     dragAccum.value = 0.0;
   }
@@ -66,18 +89,21 @@ useAddIncomeOrExpenseFab({
     }
 
     dragAccum.value += d.delta.dy;
-    final up = (-dragAccum.value / liftPx).clamp(0.0, 1.0);
+    final up = addTypeProgress(dragAccum: dragAccum.value, liftPx: liftPx);
 
     controller.value = up;
   }
 
-  Future<void> _commitIncome() async {
+  Future<void> commitIncome() async {
     if (isLocked.value) {
       return;
     }
+
     isLocked.value = true;
 
-    if (haptics) HapticFeedback.selectionClick();
+    if (haptics) {
+      HapticFeedback.selectionClick();
+    }
 
     await controller.animateTo(
       1.0,
@@ -85,7 +111,7 @@ useAddIncomeOrExpenseFab({
       curve: Curves.easeOut,
     );
 
-    rootDelegate.beamToNamed(path(AddType.income));
+    navigate(addTypePath(route: route, type: AddType.income));
 
     try {
       await controller.animateBack(
@@ -107,8 +133,8 @@ useAddIncomeOrExpenseFab({
     final up = controller.value;
     isDragging.value = false;
 
-    if (up >= threshold) {
-      _commitIncome();
+    if (shouldOpenIncome(progress: up, threshold: threshold)) {
+      commitIncome();
     } else {
       reset();
     }

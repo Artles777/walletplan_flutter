@@ -5,7 +5,7 @@ class MainDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return const Drawer(
       surfaceTintColor: Colors.white10,
       child: DecoratedBox(
         decoration: BoxDecoration(color: Colors.white10),
