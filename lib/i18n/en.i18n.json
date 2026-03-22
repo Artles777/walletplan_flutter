@@ -1,0 +1,14 @@
+{
+  "common": {
+    "income": "Income",
+    "expense": "Expense"
+  },
+  "main": {
+    "navigationBar": {
+      "transactions": "transactions",
+      "accounts": "accounts",
+      "plans": "plans",
+      "analytic": "analytic"
+    }
+  }
+}

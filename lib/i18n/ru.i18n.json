@@ -1,0 +1,14 @@
+{
+  "common": {
+    "income": "Доход",
+    "expense": "Расход"
+  },
+  "main": {
+    "navigationBar": {
+      "transactions": "Транзакции",
+      "accounts": "Счета",
+      "plans": "Планы",
+      "analytic": "Аналитика"
+    }
+  }
+}
