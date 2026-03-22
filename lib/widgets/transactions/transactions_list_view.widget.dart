@@ -26,7 +26,7 @@ class TransactionsListViewWidget extends CompositionWidget {
         if (error.value != null) Text("Ошибка: ${error.value}"),
         Expanded(
           child: ListView.builder(
-            itemCount: data.value.count,
+            itemCount: data.value.items.length,
             itemBuilder: (_, i) => Text(data.value.items[i].title),
           ),
         ),

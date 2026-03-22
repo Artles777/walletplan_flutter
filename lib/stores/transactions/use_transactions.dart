@@ -39,6 +39,61 @@ class Transaction {
 typedef GetTransactions =
     Future<Transactions> Function({required int offset, required int limit});
 
+Transactions appendTransactions(Transactions current, Transactions next) {
+  return current.copyWith(
+    items: [...current.items, ...next.items],
+    count: next.count,
+  );
+}
+
+Transactions upsertTransaction(Transactions current, Transaction tx) {
+  final items = current.items;
+  final idx = items.indexWhere((x) => x.id == tx.id);
+
+  final next = [...items];
+  if (idx == -1) {
+    next.insert(0, tx);
+    return current.copyWith(items: next, count: current.count + 1);
+  }
+
+  next[idx] = tx;
+  return current.copyWith(items: next);
+}
+
+Transactions removeTransaction(Transactions current, String id) {
+  final exists = current.items.any((x) => x.id == id);
+  if (!exists) {
+    return current;
+  }
+
+  final next = current.items.where((x) => x.id != id).toList(growable: false);
+
+  return current.copyWith(
+    items: next,
+    count: current.count > 0 ? current.count - 1 : 0,
+  );
+}
+
+Future<Transactions> _defaultFetchTransactions({
+  required int offset,
+  required int limit,
+}) async {
+  final items = <Transaction>[
+    Transaction(
+      id: "1",
+      dateTime: DateTime.timestamp(),
+      title: "Банковский перевод",
+      subtitle: "на текущие траты",
+      accountLabel: "Мир 0037",
+      amount: 420.00,
+      currencySymbol: "₽",
+      icon: Icons.account_balance,
+    ),
+  ];
+
+  return Transactions(items: items, count: items.length);
+}
+
 (
   Ref<Transactions> data,
   Ref<bool> loading,
@@ -48,32 +103,19 @@ typedef GetTransactions =
   void Function(Transaction tx) upsertLocal,
   void Function(String id) removeLocal,
 )
-useTransactions({int pageSize = 30}) {
+useTransactions({int pageSize = 30, GetTransactions? fetcher}) {
   final data = ref<Transactions>(Transactions(items: const [], count: 0));
   final loading = ref(false);
   final error = ref<Object?>(null);
 
   final offset = ref(0);
   final hasMore = computed(() => data.value.items.length < data.value.count);
-
-  Future<Transactions> fetch({required int offset, required int limit}) async {
-    final items = <Transaction>[
-      Transaction(
-        id: "1",
-        dateTime: DateTime.timestamp(),
-        title: "Банковский перевод",
-        subtitle: "на текущие траты",
-        accountLabel: "Мир 0037",
-        amount: 420.00,
-        currencySymbol: "₽",
-        icon: Icons.account_balance,
-      ),
-    ];
-    return Transactions(items: items, count: items.length);
-  }
+  final getTransactions = fetcher ?? _defaultFetchTransactions;
 
   Future<void> getData({bool refresh = false}) async {
-    if (loading.value) return;
+    if (loading.value) {
+      return;
+    }
 
     try {
       loading.value = true;
@@ -83,14 +125,12 @@ useTransactions({int pageSize = 30}) {
         offset.value = 0;
       }
 
-      final res = await fetch(offset: offset.value, limit: pageSize);
+      final res = await getTransactions(offset: offset.value, limit: pageSize);
 
       if (refresh) {
         data.value = res;
       } else {
-        final merged = <Transaction>[...data.value.items, ...res.items];
-
-        data.value = data.value.copyWith(items: merged, count: res.count);
+        data.value = appendTransactions(data.value, res);
       }
 
       offset.value = data.value.items.length;
@@ -102,29 +142,19 @@ useTransactions({int pageSize = 30}) {
   }
 
   Future<void> loadMore() async {
-    if (!hasMore.value) return;
+    if (!hasMore.value) {
+      return;
+    }
+
     await getData(refresh: false);
   }
 
   void upsertLocal(Transaction tx) {
-    final items = data.value.items;
-    final idx = items.indexWhere((x) => x.id == tx.id);
-
-    final next = [...items];
-    if (idx == -1) {
-      next.insert(0, tx);
-    } else {
-      next[idx] = tx;
-    }
-
-    data.value = data.value.copyWith(items: next);
+    data.value = upsertTransaction(data.value, tx);
   }
 
   void removeLocal(String id) {
-    final next = data.value.items
-        .where((x) => x.id != id)
-        .toList(growable: false);
-    data.value = data.value.copyWith(items: next, count: data.value.count - 1);
+    data.value = removeTransaction(data.value, id);
   }
 
   return (data, loading, error, getData, loadMore, upsertLocal, removeLocal);

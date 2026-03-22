@@ -7,7 +7,7 @@ import "package:walletplan_flutter/utils/beamer_context_ext.dart";
 typedef SetAddType = void Function(AddType type);
 
 class AddAppBarWidget extends CompositionWidget implements PreferredSizeWidget {
-  const AddAppBarWidget({super.key, required this.setType, required this.type});
+  const AddAppBarWidget({required this.setType, required this.type, super.key});
 
   final SetAddType setType;
   final AddType type;

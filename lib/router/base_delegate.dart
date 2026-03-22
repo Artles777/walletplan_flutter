@@ -47,13 +47,19 @@ int indexFromUri(Uri uri) {
   final p = uri.path;
 
   for (final entry in basePaths.entries) {
-    if (p.startsWith(entry.key)) return entry.value.index;
+    if (p.startsWith(entry.key)) {
+      return entry.value.index;
+    }
   }
 
   return BaseRoutesEnum.transactions.index;
 }
 
 String pathForIndex(int index) {
+  if (index < 0 || index >= BaseRoutesEnum.values.length) {
+    return baseRoutes[BaseRoutesEnum.transactions]!;
+  }
+
   final route = BaseRoutesEnum.values[index];
   return baseRoutes[route]!;
 }
