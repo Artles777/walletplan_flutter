@@ -39,6 +39,7 @@ class TranslationsRu with BaseTranslations<AppLocale, Translations> implements T
 	// Translations
 	@override late final _TranslationsCommonRu common = _TranslationsCommonRu._(_root);
 	@override late final _TranslationsMainRu main = _TranslationsMainRu._(_root);
+	@override late final _TranslationsTransactionsPageRu transactionsPage = _TranslationsTransactionsPageRu._(_root);
 }
 
 // Path: common
@@ -60,6 +61,19 @@ class _TranslationsMainRu implements TranslationsMainEn {
 
 	// Translations
 	@override late final _TranslationsMainNavigationBarRu navigationBar = _TranslationsMainNavigationBarRu._(_root);
+}
+
+// Path: transactionsPage
+class _TranslationsTransactionsPageRu implements TranslationsTransactionsPageEn {
+	_TranslationsTransactionsPageRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get today => 'Сегодня';
+	@override String get yesterday => 'Вчера';
+	@override String get empty => 'Пока нет транзакций';
+	@override String get loadError => 'Не удалось загрузить транзакции';
 }
 
 // Path: main.navigationBar
@@ -89,6 +103,10 @@ extension on TranslationsRu {
 			'main.navigationBar.accounts' => 'Счета',
 			'main.navigationBar.plans' => 'Планы',
 			'main.navigationBar.analytic' => 'Аналитика',
+			'transactionsPage.today' => 'Сегодня',
+			'transactionsPage.yesterday' => 'Вчера',
+			'transactionsPage.empty' => 'Пока нет транзакций',
+			'transactionsPage.loadError' => 'Не удалось загрузить транзакции',
 			_ => null,
 		};
 	}

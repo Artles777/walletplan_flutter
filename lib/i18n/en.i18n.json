@@ -10,5 +10,11 @@
       "plans": "plans",
       "analytic": "analytic"
     }
+  },
+  "transactionsPage": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "empty": "No transactions yet",
+    "loadError": "Failed to load transactions"
   }
 }

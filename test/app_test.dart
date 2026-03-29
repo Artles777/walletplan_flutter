@@ -35,7 +35,8 @@ void main() {
     expect(find.text("Счета"), findsOneWidget);
     expect(find.text("Планы"), findsOneWidget);
     expect(find.text("Аналитика"), findsOneWidget);
-    expect(find.text("Банковский перевод"), findsOneWidget);
+    expect(find.text("Рестораны и кафе"), findsOneWidget);
+    expect(find.text("Сегодня"), findsWidgets);
     expect(find.byIcon(Icons.trending_down), findsOneWidget);
   });
 
@@ -48,6 +49,21 @@ void main() {
 
     expect(find.byType(Placeholder), findsOneWidget);
     expect(baseDelegate.configuration.uri.path, "/app/accounts");
+  });
+
+  testWidgets("period picker opens from transactions header", (tester) async {
+    await tester.pumpWidget(buildApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const ValueKey("transactions-period-picker-open")),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey("transactions-period-picker-dialog")),
+      findsOneWidget,
+    );
   });
 
   testWidgets("fab tap opens expense screen", (tester) async {

@@ -42,6 +42,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final TranslationsCommonEn common = TranslationsCommonEn._(_root);
 	late final TranslationsMainEn main = TranslationsMainEn._(_root);
+	late final TranslationsTransactionsPageEn transactionsPage = TranslationsTransactionsPageEn._(_root);
 }
 
 // Path: common
@@ -67,6 +68,27 @@ class TranslationsMainEn {
 
 	// Translations
 	late final TranslationsMainNavigationBarEn navigationBar = TranslationsMainNavigationBarEn._(_root);
+}
+
+// Path: transactionsPage
+class TranslationsTransactionsPageEn {
+	TranslationsTransactionsPageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Today'
+	String get today => 'Today';
+
+	/// en: 'Yesterday'
+	String get yesterday => 'Yesterday';
+
+	/// en: 'No transactions yet'
+	String get empty => 'No transactions yet';
+
+	/// en: 'Failed to load transactions'
+	String get loadError => 'Failed to load transactions';
 }
 
 // Path: main.navigationBar
@@ -104,6 +126,10 @@ extension on Translations {
 			'main.navigationBar.accounts' => 'accounts',
 			'main.navigationBar.plans' => 'plans',
 			'main.navigationBar.analytic' => 'analytic',
+			'transactionsPage.today' => 'Today',
+			'transactionsPage.yesterday' => 'Yesterday',
+			'transactionsPage.empty' => 'No transactions yet',
+			'transactionsPage.loadError' => 'Failed to load transactions',
 			_ => null,
 		};
 	}

@@ -4,6 +4,7 @@ import "package:flutter_localizations/flutter_localizations.dart";
 import "package:syncfusion_localizations/syncfusion_localizations.dart";
 import "package:walletplan_flutter/i18n/strings.g.dart";
 import "package:walletplan_flutter/router/root_delegate.dart";
+import "package:walletplan_flutter/theme/app_theme.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +21,7 @@ class MyApp extends StatelessWidget {
       routeInformationParser: BeamerParser(),
       routerDelegate: rootDelegate,
       backButtonDispatcher: BeamerBackButtonDispatcher(delegate: rootDelegate),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigoAccent),
-      ),
+      theme: buildAppTheme(),
       localizationsDelegates: [
         ...GlobalMaterialLocalizations.delegates,
         GlobalMaterialLocalizations.delegate,
