@@ -1,7 +1,10 @@
 {
   "common": {
     "income": "Доход",
-    "expense": "Расход"
+    "expense": "Расход",
+    "apply": "Применить",
+    "cancel": "Отмена",
+    "reset": "Сбросить"
   },
   "main": {
     "navigationBar": {
@@ -10,5 +13,37 @@
       "plans": "Планы",
       "analytic": "Аналитика"
     }
+  },
+  "transactionsPage": {
+    "today": "Сегодня",
+    "yesterday": "Вчера",
+    "empty": "Пока нет транзакций",
+    "loadError": "Не удалось загрузить транзакции",
+    "accountsSelected": "$count счета",
+    "categoriesSelected": "$count категории",
+    "withoutTransfers": "Без переводов",
+    "expenseCategories": "Категории расходов",
+    "incomeCategories": "Категории доходов",
+    "operationsLabel": "операций",
+    "operationsCount": "$count операций"
+  },
+  "transactionsFiltersPage": {
+    "title": "Фильтры",
+    "typeSectionTitle": "Тип транзакций",
+    "periodSectionTitle": "Период",
+    "accountsSectionTitle": "Счета",
+    "categoriesSectionTitle": "Категории",
+    "presentationSectionTitle": "Режим отображения",
+    "advancedSectionTitle": "Дополнительно",
+    "allTypes": "Все",
+    "expensesOnly": "Расходы",
+    "incomeOnly": "Доходы",
+    "selectPeriod": "Выбрать период",
+    "allAccounts": "Все счета",
+    "allCategories": "Все категории",
+    "byDays": "По дням",
+    "byCategories": "По категориям",
+    "includeTransfers": "Включать переводы",
+    "noOptions": "Опции появятся после загрузки транзакций"
   }
 }

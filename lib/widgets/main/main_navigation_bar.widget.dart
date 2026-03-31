@@ -65,8 +65,8 @@ class MainNavigationBarWidget extends StatelessWidget {
             children: [
               item(
                 index: 0,
-                icon: Icons.exposure_outlined,
-                activeIcon: Icons.exposure,
+                icon: Icons.receipt_long_outlined,
+                activeIcon: Icons.receipt_long,
                 label: t.main.navigationBar.transactions,
               ),
               item(

@@ -43,16 +43,20 @@ final baseDelegate = BeamerDelegate(
   ).call,
 );
 
-int indexFromUri(Uri uri) {
+BaseRoutesEnum routeFromUri(Uri uri) {
   final p = uri.path;
 
   for (final entry in basePaths.entries) {
     if (p.startsWith(entry.key)) {
-      return entry.value.index;
+      return entry.value;
     }
   }
 
-  return BaseRoutesEnum.transactions.index;
+  return BaseRoutesEnum.transactions;
+}
+
+int indexFromUri(Uri uri) {
+  return routeFromUri(uri).index;
 }
 
 String pathForIndex(int index) {

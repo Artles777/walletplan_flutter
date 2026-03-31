@@ -1,7 +1,10 @@
 {
   "common": {
     "income": "Income",
-    "expense": "Expense"
+    "expense": "Expense",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "reset": "Reset"
   },
   "main": {
     "navigationBar": {
@@ -10,5 +13,37 @@
       "plans": "plans",
       "analytic": "analytic"
     }
+  },
+  "transactionsPage": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "empty": "No transactions yet",
+    "loadError": "Failed to load transactions",
+    "accountsSelected": "$count accounts",
+    "categoriesSelected": "$count categories",
+    "withoutTransfers": "No transfers",
+    "expenseCategories": "Expense categories",
+    "incomeCategories": "Income categories",
+    "operationsLabel": "operations",
+    "operationsCount": "$count operations"
+  },
+  "transactionsFiltersPage": {
+    "title": "Filters",
+    "typeSectionTitle": "Transaction type",
+    "periodSectionTitle": "Period",
+    "accountsSectionTitle": "Accounts",
+    "categoriesSectionTitle": "Categories",
+    "presentationSectionTitle": "View mode",
+    "advancedSectionTitle": "Advanced",
+    "allTypes": "All",
+    "expensesOnly": "Expenses",
+    "incomeOnly": "Income",
+    "selectPeriod": "Select period",
+    "allAccounts": "All accounts",
+    "allCategories": "All categories",
+    "byDays": "By days",
+    "byCategories": "By categories",
+    "includeTransfers": "Include transfers",
+    "noOptions": "Options will appear after transactions load"
   }
 }

@@ -17,5 +17,16 @@ void main() {
       expect(result, contains(r"$"));
       expect(result, contains("42.00"));
     });
+
+    test("formats signed values with optional plus sign", () {
+      expect(
+        formatSignedCurrencyAmount(-1250, AppCurrency.rub),
+        startsWith("-"),
+      );
+      expect(
+        formatSignedCurrencyAmount(1250, AppCurrency.rub, withPlusSign: true),
+        startsWith("+"),
+      );
+    });
   });
 }

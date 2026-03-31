@@ -35,7 +35,8 @@ void main() {
     expect(find.text("Счета"), findsOneWidget);
     expect(find.text("Планы"), findsOneWidget);
     expect(find.text("Аналитика"), findsOneWidget);
-    expect(find.text("Банковский перевод"), findsOneWidget);
+    expect(find.text("Рестораны и кафе"), findsOneWidget);
+    expect(find.text("Сегодня"), findsWidgets);
     expect(find.byIcon(Icons.trending_down), findsOneWidget);
   });
 
@@ -48,6 +49,69 @@ void main() {
 
     expect(find.byType(Placeholder), findsOneWidget);
     expect(baseDelegate.configuration.uri.path, "/app/accounts");
+  });
+
+  testWidgets("period picker opens from transactions header", (tester) async {
+    await tester.pumpWidget(buildApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const ValueKey("transactions-period-picker-open")),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey("transactions-period-picker-dialog")),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets("confirming the initial period does not mark filters as active", (
+    tester,
+  ) async {
+    await tester.pumpWidget(buildApp());
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey("transactions-open-filters-count")),
+      findsNothing,
+    );
+
+    await tester.tap(
+      find.byKey(const ValueKey("transactions-period-picker-open")),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const ValueKey("transactions-period-picker-ok")),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey("transactions-open-filters-count")),
+      findsNothing,
+    );
+  });
+
+  testWidgets("app shell keeps period picker months in russian locale", (
+    tester,
+  ) async {
+    await tester.pumpWidget(buildApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const ValueKey("transactions-period-picker-open")),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text("март"), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const ValueKey("transactions-period-picker-header-month")),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text("мар"), findsOneWidget);
   });
 
   testWidgets("fab tap opens expense screen", (tester) async {

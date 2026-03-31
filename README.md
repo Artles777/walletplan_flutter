@@ -15,9 +15,12 @@ The project already has:
 - app shell with `AppBar`, `Drawer`, bottom navigation and central FAB
 - nested routing via `beamer`
 - transactions tab with local mocked data and composable state
+- separate transactions filters screen with draft/apply flow
+- transactions presentation modes: by days and by categories
+- transactions period picker with RU / EN month formatting
 - add income / expense flow via route query parameter `type`
 - RU / EN localization via `slang`
-- automated tests for current routing, formatting, state and app-level flows
+- automated tests for routing, formatting, state, app-level flows and visual goldens
 
 The project still contains placeholders for:
 - sign in
