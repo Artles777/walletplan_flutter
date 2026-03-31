@@ -35,6 +35,7 @@
 - Корневой `rootDelegate` отвечает за:
   - `/signIn`
   - `/addIncomeOrExpense`
+  - `/transactionsFilters`
   - `/app/*`
 - Вложенный `baseDelegate` отвечает за нижние вкладки:
   - `/app/transactions`
@@ -80,26 +81,32 @@
 
 ### 3.3 Вкладка "Транзакции"
 
-Это единственная вкладка, где уже есть рабочая локальная логика данных.
+Это основная рабочая вкладка приложения на текущий момент.
 
 Что происходит сейчас:
 - при монтировании запускается загрузка через `useTransactions()`
 - отображается `LinearProgressIndicator` во время загрузки
 - после загрузки показывается список транзакций
-- при ошибке показывается текст ошибки
+- данные фильтруются и агрегируются поверх локального набора транзакций
+- при ошибке показывается error-state
 
 Текущее состояние данных:
 - данные локальные, не из backend
-- `useTransactions()` возвращает одну тестовую транзакцию
-- структура транзакции уже выделена в отдельную модель:
+- `useTransactions()` возвращает локальный набор mock-транзакций
+- структура транзакции уже выделена в отдельные модели:
   - `id`
-  - `dateTime`
+  - `type`
+  - `amount`
+  - `currency`
+  - `category`
   - `title`
   - `subtitle`
-  - `accountLabel`
-  - `amount`
-  - `currencySymbol`
+  - `sourceName`
   - `icon`
+  - `createdAt`
+  - `accountId`
+  - `categoryId`
+  - `isTransfer`
 
 Поддерживаемая логика в `useTransactions()`:
 - refresh-загрузка
@@ -109,11 +116,36 @@
 - обработка ошибки
 - контроль `loading`
 
+Что умеет UI транзакций сейчас:
+- period header c отдельным period picker
+- режим списка `By days`
+- режим списка `By categories`
+- группировка по дням после применения фильтров
+- агрегирование по категориям после применения фильтров
+- active filters summary под app bar
+- badge со счётчиком активных фильтров на иконке фильтра
+- reset applied filters
+- empty state для пустой выборки
+
+Поддерживаемые фильтры:
+- период
+- тип транзакций: `All / Expenses / Income`
+- счета
+- категории
+- include / exclude transfers
+
+Важно по состоянию:
+- filters и presentation разделены
+- используется applied state и draft state
+- отдельный экран фильтров не применяет изменения до `Apply`
+- `Cancel` отбрасывает draft state
+- `Reset` возвращает draft к default state
+
 Ограничения текущей реализации:
 - нет реального datasource
 - нет repository / API слоя
-- в UI пока отображается только `title` транзакции
-- нет карточек, группировки по датам, сумм и пустого состояния
+- merchants / tags пока не поддержаны как пользовательские фильтры
+- данные счетов и категорий выводятся из текущего локального списка транзакций
 
 ### 3.4 Вкладки "Счета", "Планы", "Аналитика"
 
@@ -168,8 +200,10 @@
 - `en`
 
 Сейчас локализация покрывает:
-- `common.income`
-- `common.expense`
+- общий shell
+- транзакции
+- экран фильтров транзакций
+- period picker и его подписи
 - подписи пунктов нижней навигации
 
 Источник переводов:
@@ -189,14 +223,26 @@
   Проверяет соответствие индексов и маршрутов вкладок.
 - `test/utils/currency_formatter_test.dart`
   Проверяет форматирование RUB и USD.
+- `test/utils/transactions_period_formatter_test.dart`
+  Проверяет форматирование month labels для period picker, включая RU / EN.
 - `test/pages/add_income_or_expense_page_test.dart`
   Проверяет парсинг `type` и обновление URI.
+- `test/pages/transactions_filters_page_test.dart`
+  Проверяет переходы, apply / cancel / reset и восстановление applied state.
 - `test/stores/transactions/use_transactions_test.dart`
   Проверяет refresh, append, upsert, remove и error handling.
+- `test/stores/transactions/use_transactions_view_summary_test.dart`
+  Проверяет filters / grouping / category aggregation для списка транзакций.
 - `test/stores/transactions/use_income_expense_fab_test.dart`
   Проверяет route-building, drag progress, threshold-логику и навигацию FAB.
 - `test/app_test.dart`
-  Проверяет основной shell, навигацию по вкладкам и открытие add-flow.
+  Проверяет основной shell, навигацию по вкладкам, period flow и открытие add-flow.
+- `test/widgets/transactions/transactions_period_header_widget_navigation_test.dart`
+  Проверяет навигацию period picker и локализацию месяца в реальном widget flow.
+- `test/widgets/transactions/transactions_list_view_widget_test.dart`
+  Проверяет layout списка транзакций и pinned day slivers.
+- `test/goldens/visual_regression_test.dart`
+  Проверяет golden-снимки overview, period picker, filters screen и dirty filters state.
 
 ## 5. Известные ограничения текущей версии
 
@@ -206,6 +252,7 @@
 - Нет рабочих форм создания дохода и расхода.
 - Нет edit/delete flow для операций через UI.
 - App bar, drawer и часть страниц пока используют тестовые данные и заглушки.
+- Экран фильтров пока строит options из локального набора транзакций, а не из отдельного словаря счетов / категорий.
 
 ## 6. Как обновлять этот документ при новых фичах
 
@@ -227,6 +274,7 @@
 - Реальные формы дохода и расхода
 - Источник данных для транзакций
 - Модель счетов и экран счетов
-- Пустые состояния и обработка ошибок в UI
+- Справочники счетов / категорий отдельно от списка операций
+- Merchants / tags как отдельные фильтры при появлении данных
 - Нормальный drawer и screen settings
 - Разделение mocked data и production data source

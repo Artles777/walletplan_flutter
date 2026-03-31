@@ -29,32 +29,13 @@ class TransactionsPeriodHeaderWidget extends StatelessWidget {
   final List<DateTime> blockedDates;
 
   Future<void> _pickPeriod(BuildContext context) async {
-    final constraints = TransactionsPeriodPickerConstraints(
-      today: today ?? DateTime.now(),
+    final picked = await showTransactionsPeriodPicker(
+      context,
+      period: period,
+      today: today,
       minDate: minDate,
       maxDate: maxDate,
       blockedDates: blockedDates,
-    );
-    final normalizedAppliedSelection =
-        clampPeriodSelectionToConstraints(constraints, period) ??
-        fallbackPeriodSelection(constraints);
-
-    if (normalizedAppliedSelection == null) {
-      return;
-    }
-
-    final initialView = period.mode == TransactionsPeriodMode.year
-        ? TransactionsPeriodPickerView.year
-        : TransactionsPeriodPickerView.day;
-    final picked = await showDialog<TransactionsPeriodSelection>(
-      context: context,
-      builder: (context) {
-        return TransactionsPeriodPickerDialogWidget(
-          initialSelection: normalizedAppliedSelection,
-          initialView: initialView,
-          constraints: constraints,
-        );
-      },
     );
 
     if (picked != null && context.mounted) {
@@ -78,11 +59,11 @@ class TransactionsPeriodHeaderWidget extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 6),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerLow,
+          color: colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(999),
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 3, 12, 3),
+          padding: const EdgeInsets.fromLTRB(10, 5, 12, 5),
           child: Row(
             children: [
               Expanded(
@@ -93,7 +74,7 @@ class TransactionsPeriodHeaderWidget extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 6,
-                      vertical: 4,
+                      vertical: 5,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -142,4 +123,42 @@ class TransactionsPeriodHeaderWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<TransactionsPeriodSelection?> showTransactionsPeriodPicker(
+  BuildContext context, {
+  required TransactionsPeriodSelection period,
+  DateTime? today,
+  DateTime? minDate,
+  DateTime? maxDate,
+  List<DateTime> blockedDates = const [],
+}) async {
+  final constraints = TransactionsPeriodPickerConstraints(
+    today: today ?? DateTime.now(),
+    minDate: minDate,
+    maxDate: maxDate,
+    blockedDates: blockedDates,
+  );
+  final normalizedAppliedSelection =
+      clampPeriodSelectionToConstraints(constraints, period) ??
+      fallbackPeriodSelection(constraints);
+
+  if (normalizedAppliedSelection == null) {
+    return null;
+  }
+
+  final initialView = period.mode == TransactionsPeriodMode.year
+      ? TransactionsPeriodPickerView.year
+      : TransactionsPeriodPickerView.day;
+
+  return showDialog<TransactionsPeriodSelection>(
+    context: context,
+    builder: (context) {
+      return TransactionsPeriodPickerDialogWidget(
+        initialSelection: normalizedAppliedSelection,
+        initialView: initialView,
+        constraints: constraints,
+      );
+    },
+  );
 }

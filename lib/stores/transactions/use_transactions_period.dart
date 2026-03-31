@@ -190,13 +190,19 @@ TransactionsPeriodSelection normalizePeriodSelection(
   }
 }
 
-TransactionsPeriodStore useTransactionsPeriod() {
-  final selectedPeriod = ref(
-    TransactionsPeriodSelection(
-      date: startOfMonth(DateTime.now()),
-      mode: TransactionsPeriodMode.month,
-    ),
+TransactionsPeriodSelection buildDefaultTransactionsPeriodSelection({
+  DateTime? now,
+}) {
+  final currentDate = now ?? DateTime.now();
+
+  return TransactionsPeriodSelection(
+    date: startOfMonth(currentDate),
+    mode: TransactionsPeriodMode.month,
   );
+}
+
+TransactionsPeriodStore useTransactionsPeriod() {
+  final selectedPeriod = ref(buildDefaultTransactionsPeriodSelection());
 
   void setPeriod(TransactionsPeriodSelection period) {
     selectedPeriod.value = normalizePeriodSelection(period);

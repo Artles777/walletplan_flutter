@@ -8,10 +8,13 @@
 // system typography.
 
 import "package:flutter/material.dart";
+import "package:flutter_compositions/flutter_compositions.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:walletplan_flutter/i18n/strings.g.dart";
+import "package:walletplan_flutter/pages/common/transactions_filters.page.dart";
 import "package:walletplan_flutter/router/base_delegate.dart";
 import "package:walletplan_flutter/router/root_delegate.dart";
+import "package:walletplan_flutter/stores/transactions/transactions_scope.widget.dart";
 import "package:walletplan_flutter/stores/transactions/use_transactions.dart";
 import "package:walletplan_flutter/utils/currency_formatter.dart";
 import "package:walletplan_flutter/widgets/main/main_navigation_bar.widget.dart";
@@ -52,6 +55,47 @@ void main() {
     await expectLater(
       find.byKey(goldenSurfaceKey),
       matchesGoldenFile("goldens/transactions_period_picker_dialog.png"),
+    );
+  });
+
+  testWidgets("transactions filters screen matches golden", (tester) async {
+    await pumpGoldenApp(tester, home: const _TransactionsFiltersGoldenPage());
+
+    await expectLater(
+      find.byKey(goldenSurfaceKey),
+      matchesGoldenFile("goldens/transactions_filters_screen.png"),
+    );
+  });
+
+  testWidgets("transactions filters screen with draft changes matches golden", (
+    tester,
+  ) async {
+    await pumpGoldenApp(tester, home: const _TransactionsFiltersGoldenPage());
+
+    await tester.tap(find.text("Расходы"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Мир 0037"));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text("По категориям"),
+      120,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("По категориям"));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.widgetWithText(SwitchListTile, "Включать переводы"),
+      120,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(SwitchListTile, "Включать переводы"));
+    await tester.pumpAndSettle();
+
+    await expectLater(
+      find.byKey(goldenSurfaceKey),
+      matchesGoldenFile("goldens/transactions_filters_screen_dirty.png"),
     );
   });
 
@@ -185,5 +229,34 @@ class _TransactionsOverviewGoldenPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _TransactionsFiltersGoldenPage extends StatelessWidget {
+  const _TransactionsFiltersGoldenPage();
+
+  @override
+  Widget build(BuildContext context) {
+    return const TransactionsScopeWidget(
+      child: _TransactionsFiltersGoldenLoaderWidget(),
+    );
+  }
+}
+
+class _TransactionsFiltersGoldenLoaderWidget extends CompositionWidget {
+  const _TransactionsFiltersGoldenLoaderWidget();
+
+  @override
+  Widget Function(BuildContext) setup() {
+    final transactionsStore = inject(
+      transactionsStoreKey,
+      defaultValue: useTransactions(),
+    );
+
+    onMounted(() {
+      transactionsStore.getData(refresh: true);
+    });
+
+    return (_) => const TransactionsFiltersPage();
   }
 }

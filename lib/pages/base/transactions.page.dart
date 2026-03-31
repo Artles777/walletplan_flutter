@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:walletplan_flutter/widgets/transactions/transactions_active_filters.widget.dart";
 import "package:walletplan_flutter/widgets/transactions/transactions_list_view.widget.dart";
 
 class TransactionsPage extends StatelessWidget {
@@ -8,7 +9,12 @@ class TransactionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints.expand(),
-      child: const TransactionsListViewWidget(),
+      child: const Column(
+        children: [
+          TransactionsActiveFiltersWidget(),
+          Expanded(child: TransactionsListViewWidget()),
+        ],
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@
 
 import "package:flutter/material.dart";
 import "package:flutter_test/flutter_test.dart";
+import "package:flutter_localizations/flutter_localizations.dart";
 import "package:walletplan_flutter/stores/transactions/use_transactions.dart";
 import "package:walletplan_flutter/utils/currency_formatter.dart";
 import "package:walletplan_flutter/widgets/transactions/transactions_period_header.widget.dart";
@@ -28,6 +29,8 @@ Future<void> pumpHeader(
   return tester.pumpWidget(
     MaterialApp(
       locale: locale,
+      supportedLocales: const [Locale("en"), Locale("ru")],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       home: Scaffold(
         body: TransactionsPeriodHeaderWidget(
           period: period,

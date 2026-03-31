@@ -2,7 +2,9 @@ import "package:flutter/material.dart";
 import "package:walletplan_flutter/utils/currency_formatter.dart";
 
 class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  const MainAppBarWidget({super.key});
+  const MainAppBarWidget({this.actions, super.key});
+
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +31,17 @@ class MainAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        IconButton(
-          onPressed: () => {},
-          icon: const Icon(Icons.manage_search_outlined),
-        ),
-        IconButton(
-          onPressed: () => {},
-          icon: const Icon(Icons.settings_outlined),
-        ),
+        ...(actions ??
+            [
+              IconButton(
+                onPressed: () => {},
+                icon: const Icon(Icons.manage_search_outlined),
+              ),
+              IconButton(
+                onPressed: () => {},
+                icon: const Icon(Icons.settings_outlined),
+              ),
+            ]),
       ],
     );
   }

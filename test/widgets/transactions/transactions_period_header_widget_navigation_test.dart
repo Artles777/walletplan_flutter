@@ -65,9 +65,16 @@ void main() {
     testWidgets(
       "month header opens month picker and keeps current month focused",
       (tester) async {
-        await pumpDefaultHeader(tester, onSelected: (_) {});
+        await pumpDefaultHeader(
+          tester,
+          locale: const Locale("ru"),
+          onSelected: (_) {},
+        );
 
         await openPicker(tester);
+
+        expect(find.text("март"), findsOneWidget);
+
         await openMonthPicker(tester);
 
         expect(
@@ -75,6 +82,7 @@ void main() {
           findsOneWidget,
         );
         expect(focusedMonth(3), findsOneWidget);
+        expect(find.text("мар"), findsOneWidget);
       },
     );
 
