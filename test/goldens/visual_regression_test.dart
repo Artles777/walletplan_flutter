@@ -18,8 +18,8 @@ import "package:walletplan_flutter/stores/transactions/transactions_scope.widget
 import "package:walletplan_flutter/stores/transactions/use_transactions.dart";
 import "package:walletplan_flutter/utils/currency_formatter.dart";
 import "package:walletplan_flutter/widgets/main/main_navigation_bar.widget.dart";
-import "package:walletplan_flutter/widgets/transactions/transactions_day_section.widget.dart";
 import "package:walletplan_flutter/widgets/transactions/transactions_period_header.widget.dart";
+import "package:walletplan_flutter/widgets/transactions/transactions_scrollable_content.widget.dart";
 
 import "golden_test_harness.dart";
 
@@ -39,6 +39,23 @@ void main() {
     await expectLater(
       find.byKey(goldenSurfaceKey),
       matchesGoldenFile("goldens/transactions_overview.png"),
+    );
+  });
+
+  testWidgets("transactions overview pinned header matches golden", (
+    tester,
+  ) async {
+    await pumpGoldenApp(
+      tester,
+      home: const _TransactionsOverviewGoldenPage(groupCount: 7),
+    );
+
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -260));
+    await tester.pumpAndSettle();
+
+    await expectLater(
+      find.byKey(goldenSurfaceKey),
+      matchesGoldenFile("goldens/transactions_overview_pinned_header.png"),
     );
   });
 
@@ -141,7 +158,9 @@ void main() {
 }
 
 class _TransactionsOverviewGoldenPage extends StatelessWidget {
-  const _TransactionsOverviewGoldenPage();
+  const _TransactionsOverviewGoldenPage({this.groupCount = 2});
+
+  final int groupCount;
 
   @override
   Widget build(BuildContext context) {
@@ -150,56 +169,16 @@ class _TransactionsOverviewGoldenPage extends StatelessWidget {
       mode: TransactionsPeriodMode.month,
     );
 
-    final groups = [
-      TransactionDayGroup(
-        date: DateTime(2025, 3, 17),
-        items: [
-          Transaction(
-            id: "expense-restaurant",
-            type: TransactionType.expense,
-            amount: 4,
-            currency: AppCurrency.rub,
-            category: "Еда",
-            title: "Еда",
-            subtitle: "Обед",
-            sourceName: "Мир",
-            icon: Icons.restaurant_rounded,
-            createdAt: DateTime(2025, 3, 17, 14, 20),
-          ),
-          Transaction(
-            id: "expense-taxi",
-            type: TransactionType.expense,
-            amount: 1,
-            currency: AppCurrency.rub,
-            category: "Транспорт",
-            title: "Такси",
-            subtitle: "Офис",
-            sourceName: "Мир",
-            icon: Icons.local_taxi_rounded,
-            createdAt: DateTime(2025, 3, 17, 9, 10),
-          ),
-        ],
-        total: -5,
-      ),
-      TransactionDayGroup(
-        date: DateTime(2025, 3, 16),
-        items: [
-          Transaction(
-            id: "income-freelance",
-            type: TransactionType.income,
-            amount: 9,
-            currency: AppCurrency.rub,
-            category: "Подработка",
-            title: "Доход",
-            subtitle: "Заказ",
-            sourceName: "Счет",
-            icon: Icons.work_history_rounded,
-            createdAt: DateTime(2025, 3, 16, 18, 40),
-          ),
-        ],
-        total: 9,
-      ),
-    ];
+    final groups = _buildGroups(groupCount);
+    final items = groups.expand((group) => group.items).toList(growable: false);
+    final summary = TransactionsPeriodSummary(
+      period: period.date,
+      periodMode: period.mode,
+      items: items,
+      groups: groups,
+      total: 4,
+      currency: AppCurrency.rub,
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -216,19 +195,82 @@ class _TransactionsOverviewGoldenPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.separated(
+              child: TransactionsScrollableContentWidget(
+                period: period,
+                summary: summary,
+                groupBy: TransactionsGroupBy.days,
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                itemCount: groups.length,
-                separatorBuilder: (_, _) => const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  return TransactionsDaySectionWidget(group: groups[index]);
-                },
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  List<TransactionDayGroup> _buildGroups(int count) {
+    final groups = <TransactionDayGroup>[];
+
+    for (var index = 0; index < count; index++) {
+      final date = DateTime(2025, 3, 17 - index);
+      if (index.isEven) {
+        groups.add(
+          TransactionDayGroup(
+            date: date,
+            items: [
+              Transaction(
+                id: "expense-restaurant-$index",
+                type: TransactionType.expense,
+                amount: 4 + index,
+                currency: AppCurrency.rub,
+                category: "Еда",
+                title: "Еда",
+                subtitle: "Обед",
+                sourceName: "Мир",
+                icon: Icons.restaurant_rounded,
+                createdAt: DateTime(2025, 3, 17 - index, 14, 20),
+              ),
+              Transaction(
+                id: "expense-taxi-$index",
+                type: TransactionType.expense,
+                amount: 1 + index,
+                currency: AppCurrency.rub,
+                category: "Транспорт",
+                title: "Такси",
+                subtitle: "Офис",
+                sourceName: "Мир",
+                icon: Icons.local_taxi_rounded,
+                createdAt: DateTime(2025, 3, 17 - index, 9, 10),
+              ),
+            ],
+            total: -(5 + index * 2),
+          ),
+        );
+      } else {
+        groups.add(
+          TransactionDayGroup(
+            date: date,
+            items: [
+              Transaction(
+                id: "income-freelance-$index",
+                type: TransactionType.income,
+                amount: 9 + index,
+                currency: AppCurrency.rub,
+                category: "Подработка",
+                title: "Доход",
+                subtitle: "Заказ",
+                sourceName: "Счет",
+                icon: Icons.work_history_rounded,
+                createdAt: DateTime(2025, 3, 17 - index, 18, 40),
+              ),
+            ],
+            total: 9 + index,
+          ),
+        );
+      }
+    }
+
+    return groups;
   }
 }
 

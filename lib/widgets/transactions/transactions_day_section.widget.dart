@@ -22,6 +22,8 @@ class TransactionsDaySectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TransactionsDaySectionSurfaceWidget(
+      includeTopBorder: showHeader,
+      includeTopRadius: showHeader,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

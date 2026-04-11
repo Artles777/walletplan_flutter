@@ -45,5 +45,28 @@
     "byCategories": "По категориям",
     "includeTransfers": "Включать переводы",
     "noOptions": "Опции появятся после загрузки транзакций"
+  },
+  "accountsPage": {
+    "summaryTitle": "Все счета",
+    "activeAccounts": "$count активных счета",
+    "connectedAccounts": "$count банка",
+    "manualAccounts": "$count ручных",
+    "investmentAccounts": "$count инвестиции",
+    "connectedSection": "Подключенные счета",
+    "manualSection": "Мои счета",
+    "investmentsSection": "Инвестиции",
+    "syncMinutesAgo": "Синхр: $minutes мин назад",
+    "syncUpdated": "Обновлено",
+    "syncError": "Ошибка синхронизации",
+    "cashTitle": "Наличные",
+    "cashSubtitle": "Ручной счёт",
+    "savingsTitle": "Копилка",
+    "savingsSubtitle": "Моя цель",
+    "vacationTitle": "Отпуск",
+    "vacationSubtitle": "Резерв поездки",
+    "brokerageTitle": "Брокерский счёт",
+    "cryptoWalletTitle": "Крипто-кошелёк",
+    "addAccount": "Добавить счёт",
+    "manageAccounts": "Управление счетами"
   }
 }

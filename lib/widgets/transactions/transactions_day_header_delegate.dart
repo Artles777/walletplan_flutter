@@ -18,17 +18,38 @@ class TransactionsDayHeaderDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     final cs = Theme.of(context).colorScheme;
+    final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final borderSide = BorderSide(
+      color: cs.outlineVariant.withValues(alpha: 0.55),
+    );
+    final borderRadius = BorderRadius.vertical(
+      top: const Radius.circular(22),
+      bottom: Radius.circular(overlapsContent ? 18 : 0),
+    );
+    final border = Border(
+      top: borderSide,
+      left: borderSide,
+      right: borderSide,
+      bottom: overlapsContent ? borderSide : BorderSide.none,
+    );
 
-    return Material(
-      color: Colors.transparent,
-      elevation: overlapsContent ? 1 : 0,
-      shadowColor: Colors.black.withValues(alpha: 0.06),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: cs.surfaceContainerLow,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
+    return ColoredBox(
+      color: scaffoldBackgroundColor,
+      child: Material(
+        color: Colors.transparent,
+        elevation: overlapsContent ? 2 : 0,
+        shadowColor: Colors.black.withValues(alpha: 0.06),
+        child: ClipRRect(
+          borderRadius: borderRadius,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: cs.surfaceContainerLow,
+              border: border,
+              borderRadius: borderRadius,
+            ),
+            child: Align(alignment: Alignment.bottomCenter, child: child),
+          ),
         ),
-        child: Align(alignment: Alignment.bottomCenter, child: child),
       ),
     );
   }

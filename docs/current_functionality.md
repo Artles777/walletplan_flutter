@@ -243,6 +243,14 @@
   Проверяет layout списка транзакций и pinned day slivers.
 - `test/goldens/visual_regression_test.dart`
   Проверяет golden-снимки overview, period picker, filters screen и dirty filters state.
+- `test/goldens/transactions_screen_visual_regression_test.dart`
+  Проверяет route-level golden-снимки полного экрана транзакций в shell и
+  состояния с применёнными фильтрами.
+
+Визуальная документация:
+- `docs/transactions_visuals.md`
+  Содержит актуальные эталонные снимки экрана транзакций и команды для
+  обновления golden-файлов.
 
 ## 5. Известные ограничения текущей версии
 
