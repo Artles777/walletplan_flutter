@@ -45,5 +45,28 @@
     "byCategories": "By categories",
     "includeTransfers": "Include transfers",
     "noOptions": "Options will appear after transactions load"
+  },
+  "accountsPage": {
+    "summaryTitle": "All accounts",
+    "activeAccounts": "$count active accounts",
+    "connectedAccounts": "$count banks",
+    "manualAccounts": "$count manual",
+    "investmentAccounts": "$count investments",
+    "connectedSection": "Connected accounts",
+    "manualSection": "My accounts",
+    "investmentsSection": "Investments",
+    "syncMinutesAgo": "Sync: $minutes min ago",
+    "syncUpdated": "Updated",
+    "syncError": "Sync error",
+    "cashTitle": "Cash",
+    "cashSubtitle": "Manual account",
+    "savingsTitle": "Savings",
+    "savingsSubtitle": "My goal",
+    "vacationTitle": "Vacation",
+    "vacationSubtitle": "Trip reserve",
+    "brokerageTitle": "Brokerage account",
+    "cryptoWalletTitle": "Crypto wallet",
+    "addAccount": "Add account",
+    "manageAccounts": "Manage accounts"
   }
 }

@@ -44,6 +44,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsMainEn main = TranslationsMainEn._(_root);
 	late final TranslationsTransactionsPageEn transactionsPage = TranslationsTransactionsPageEn._(_root);
 	late final TranslationsTransactionsFiltersPageEn transactionsFiltersPage = TranslationsTransactionsFiltersPageEn._(_root);
+	late final TranslationsAccountsPageEn accountsPage = TranslationsAccountsPageEn._(_root);
 }
 
 // Path: common
@@ -182,6 +183,78 @@ class TranslationsTransactionsFiltersPageEn {
 	String get noOptions => 'Options will appear after transactions load';
 }
 
+// Path: accountsPage
+class TranslationsAccountsPageEn {
+	TranslationsAccountsPageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'All accounts'
+	String get summaryTitle => 'All accounts';
+
+	/// en: '$count active accounts'
+	String activeAccounts({required Object count}) => '${count} active accounts';
+
+	/// en: '$count banks'
+	String connectedAccounts({required Object count}) => '${count} banks';
+
+	/// en: '$count manual'
+	String manualAccounts({required Object count}) => '${count} manual';
+
+	/// en: '$count investments'
+	String investmentAccounts({required Object count}) => '${count} investments';
+
+	/// en: 'Connected accounts'
+	String get connectedSection => 'Connected accounts';
+
+	/// en: 'My accounts'
+	String get manualSection => 'My accounts';
+
+	/// en: 'Investments'
+	String get investmentsSection => 'Investments';
+
+	/// en: 'Sync: $minutes min ago'
+	String syncMinutesAgo({required Object minutes}) => 'Sync: ${minutes} min ago';
+
+	/// en: 'Updated'
+	String get syncUpdated => 'Updated';
+
+	/// en: 'Sync error'
+	String get syncError => 'Sync error';
+
+	/// en: 'Cash'
+	String get cashTitle => 'Cash';
+
+	/// en: 'Manual account'
+	String get cashSubtitle => 'Manual account';
+
+	/// en: 'Savings'
+	String get savingsTitle => 'Savings';
+
+	/// en: 'My goal'
+	String get savingsSubtitle => 'My goal';
+
+	/// en: 'Vacation'
+	String get vacationTitle => 'Vacation';
+
+	/// en: 'Trip reserve'
+	String get vacationSubtitle => 'Trip reserve';
+
+	/// en: 'Brokerage account'
+	String get brokerageTitle => 'Brokerage account';
+
+	/// en: 'Crypto wallet'
+	String get cryptoWalletTitle => 'Crypto wallet';
+
+	/// en: 'Add account'
+	String get addAccount => 'Add account';
+
+	/// en: 'Manage accounts'
+	String get manageAccounts => 'Manage accounts';
+}
+
 // Path: main.navigationBar
 class TranslationsMainNavigationBarEn {
 	TranslationsMainNavigationBarEn._(this._root);
@@ -248,6 +321,27 @@ extension on Translations {
 			'transactionsFiltersPage.byCategories' => 'By categories',
 			'transactionsFiltersPage.includeTransfers' => 'Include transfers',
 			'transactionsFiltersPage.noOptions' => 'Options will appear after transactions load',
+			'accountsPage.summaryTitle' => 'All accounts',
+			'accountsPage.activeAccounts' => ({required Object count}) => '${count} active accounts',
+			'accountsPage.connectedAccounts' => ({required Object count}) => '${count} banks',
+			'accountsPage.manualAccounts' => ({required Object count}) => '${count} manual',
+			'accountsPage.investmentAccounts' => ({required Object count}) => '${count} investments',
+			'accountsPage.connectedSection' => 'Connected accounts',
+			'accountsPage.manualSection' => 'My accounts',
+			'accountsPage.investmentsSection' => 'Investments',
+			'accountsPage.syncMinutesAgo' => ({required Object minutes}) => 'Sync: ${minutes} min ago',
+			'accountsPage.syncUpdated' => 'Updated',
+			'accountsPage.syncError' => 'Sync error',
+			'accountsPage.cashTitle' => 'Cash',
+			'accountsPage.cashSubtitle' => 'Manual account',
+			'accountsPage.savingsTitle' => 'Savings',
+			'accountsPage.savingsSubtitle' => 'My goal',
+			'accountsPage.vacationTitle' => 'Vacation',
+			'accountsPage.vacationSubtitle' => 'Trip reserve',
+			'accountsPage.brokerageTitle' => 'Brokerage account',
+			'accountsPage.cryptoWalletTitle' => 'Crypto wallet',
+			'accountsPage.addAccount' => 'Add account',
+			'accountsPage.manageAccounts' => 'Manage accounts',
 			_ => null,
 		};
 	}

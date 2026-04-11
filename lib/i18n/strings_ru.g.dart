@@ -41,6 +41,7 @@ class TranslationsRu with BaseTranslations<AppLocale, Translations> implements T
 	@override late final _TranslationsMainRu main = _TranslationsMainRu._(_root);
 	@override late final _TranslationsTransactionsPageRu transactionsPage = _TranslationsTransactionsPageRu._(_root);
 	@override late final _TranslationsTransactionsFiltersPageRu transactionsFiltersPage = _TranslationsTransactionsFiltersPageRu._(_root);
+	@override late final _TranslationsAccountsPageRu accountsPage = _TranslationsAccountsPageRu._(_root);
 }
 
 // Path: common
@@ -113,6 +114,36 @@ class _TranslationsTransactionsFiltersPageRu implements TranslationsTransactions
 	@override String get noOptions => 'Опции появятся после загрузки транзакций';
 }
 
+// Path: accountsPage
+class _TranslationsAccountsPageRu implements TranslationsAccountsPageEn {
+	_TranslationsAccountsPageRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get summaryTitle => 'Все счета';
+	@override String activeAccounts({required Object count}) => '${count} активных счета';
+	@override String connectedAccounts({required Object count}) => '${count} банка';
+	@override String manualAccounts({required Object count}) => '${count} ручных';
+	@override String investmentAccounts({required Object count}) => '${count} инвестиции';
+	@override String get connectedSection => 'Подключенные счета';
+	@override String get manualSection => 'Мои счета';
+	@override String get investmentsSection => 'Инвестиции';
+	@override String syncMinutesAgo({required Object minutes}) => 'Синхр: ${minutes} мин назад';
+	@override String get syncUpdated => 'Обновлено';
+	@override String get syncError => 'Ошибка синхронизации';
+	@override String get cashTitle => 'Наличные';
+	@override String get cashSubtitle => 'Ручной счёт';
+	@override String get savingsTitle => 'Копилка';
+	@override String get savingsSubtitle => 'Моя цель';
+	@override String get vacationTitle => 'Отпуск';
+	@override String get vacationSubtitle => 'Резерв поездки';
+	@override String get brokerageTitle => 'Брокерский счёт';
+	@override String get cryptoWalletTitle => 'Крипто-кошелёк';
+	@override String get addAccount => 'Добавить счёт';
+	@override String get manageAccounts => 'Управление счетами';
+}
+
 // Path: main.navigationBar
 class _TranslationsMainNavigationBarRu implements TranslationsMainNavigationBarEn {
 	_TranslationsMainNavigationBarRu._(this._root);
@@ -171,6 +202,27 @@ extension on TranslationsRu {
 			'transactionsFiltersPage.byCategories' => 'По категориям',
 			'transactionsFiltersPage.includeTransfers' => 'Включать переводы',
 			'transactionsFiltersPage.noOptions' => 'Опции появятся после загрузки транзакций',
+			'accountsPage.summaryTitle' => 'Все счета',
+			'accountsPage.activeAccounts' => ({required Object count}) => '${count} активных счета',
+			'accountsPage.connectedAccounts' => ({required Object count}) => '${count} банка',
+			'accountsPage.manualAccounts' => ({required Object count}) => '${count} ручных',
+			'accountsPage.investmentAccounts' => ({required Object count}) => '${count} инвестиции',
+			'accountsPage.connectedSection' => 'Подключенные счета',
+			'accountsPage.manualSection' => 'Мои счета',
+			'accountsPage.investmentsSection' => 'Инвестиции',
+			'accountsPage.syncMinutesAgo' => ({required Object minutes}) => 'Синхр: ${minutes} мин назад',
+			'accountsPage.syncUpdated' => 'Обновлено',
+			'accountsPage.syncError' => 'Ошибка синхронизации',
+			'accountsPage.cashTitle' => 'Наличные',
+			'accountsPage.cashSubtitle' => 'Ручной счёт',
+			'accountsPage.savingsTitle' => 'Копилка',
+			'accountsPage.savingsSubtitle' => 'Моя цель',
+			'accountsPage.vacationTitle' => 'Отпуск',
+			'accountsPage.vacationSubtitle' => 'Резерв поездки',
+			'accountsPage.brokerageTitle' => 'Брокерский счёт',
+			'accountsPage.cryptoWalletTitle' => 'Крипто-кошелёк',
+			'accountsPage.addAccount' => 'Добавить счёт',
+			'accountsPage.manageAccounts' => 'Управление счетами',
 			_ => null,
 		};
 	}

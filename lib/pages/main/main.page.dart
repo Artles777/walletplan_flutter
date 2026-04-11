@@ -21,6 +21,18 @@ class MainPage extends StatelessWidget {
           drawer: const MainDrawerWidget(),
           appBar: switch (currentRoute) {
             BaseRoutesEnum.transactions => const TransactionsAppBarWidget(),
+            BaseRoutesEnum.accounts => MainAppBarWidget(
+              actions: [
+                IconButton(
+                  onPressed: () => debugPrint("Manage accounts tapped"),
+                  icon: const Icon(Icons.manage_accounts_outlined),
+                ),
+                IconButton(
+                  onPressed: () => debugPrint("Open settings tapped"),
+                  icon: const Icon(Icons.settings_outlined),
+                ),
+              ],
+            ),
             _ => const MainAppBarWidget(),
           },
           body: Beamer(routerDelegate: baseDelegate),
